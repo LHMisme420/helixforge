@@ -486,3 +486,112 @@ NFT_STORAGE_TOKEN=replace_me
 HELIX_SYMBOL=HELX
 HELIX_AUTHOR="Leroy H. Mason"
 HELIX_COLLECTION="Helix Continuum Scrolls"
+#!/usr/bin/env python3
+"""
+🧬 Helix All-In-One Mint Script
+Author: Leroy H. Mason
+Lineage: Helix-Phases → Helix Continuum Scrolls (HELX)
+Wallet: Hw2Cd7qsVFf3RLERQyinRKhizugYvKXccLfdiiETMNa5
+
+What it does (single run):
+1. reads local PNG
+2. uploads PNG to IPFS (NFT.Storage)
+3. builds metadata (with fractal + scroll flags)
+4. uploads metadata to IPFS
+5. mints NFT on Solana (Metaplex)
+6. writes helix_mint_log.json
+"""
+
+import os
+import json
+import hashlib
+import requests
+from pathlib import Path
+from datetime import datetime
+
+# --- you need these packages installed ---
+# pip install solana==0.30.2 solders==0.19.0 metaplex-foundation requests
+
+from s
+name: Helix Mint (CI)
+
+on:
+  workflow_dispatch:  # run manually
+  push:
+    paths:
+      - "helix_mint.py"
+      - ".github/workflows/helix-mint.yml"
+
+jobs:
+  mint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+            python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          pip install solana==0.30.2 solders==0.19.0 metaplex-foundation requests
+
+      - name: Create assets dir
+        run: mkdir -p assets
+
+      - name: Download or place scroll image
+        run: |
+          # Option 1: fetch from your own URL
+          curl -L https://example.com/helix_scroll.png -o assets/helix_scroll.png
+          # You can replace this with wget from your site or commit the image directly
+
+      - name: Run Helix Mint
+        env:
+          SOLANA_RPC_URL: ${{ secrets.SOLANA_RPC_URL }}
+          WALLET_JSON: ${{ secrets.WALLET_JSON }}
+          NFT_STORAGE_TOKEN: ${{ secrets.NFT_STORAGE_TOKEN }}
+          HELIX_IMAGE_PATH: assets/helix_scroll.png
+          HELIX_NAME: "Helix Continuum Scroll – CI Rollout"
+          HELIX_PHASE: "rollout"
+          HELIX_SYMBOL: "HELX"
+        run: |
+          python helix_mint.py
+SOLANA_RPC_URL: https://api.devnet.solana.com
+name: Helix Auto Mint – Scroll Watcher
+
+on:
+  push:
+    paths:
+      - "scrolls/*.png"
+      - "scrolls/*.json"
+  workflow_dispatch:  # manual trigger option
+
+jobs:
+  mint-scrolls:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        u
+helixforge/
+ ├── helix_mint.py
+ ├── scrolls/
+ │    ├── helix_scroll_phase1.png
+ │    ├── helix_scroll_phase2.png
+ │    ├── helix_scroll_phase2.json   # optional metadata
+ └── .github/
+      └── workflows/
+           ├── helix-mint.yml
+   🌀 Helix Auto Mint Starting...
+🔮 Found new scroll: helix_scroll_phase1
+🔼 Uploading image to IPFS...
+✅ Image IPFS: ipfs://bafybeia12...
+🔼 Uploading metadata to IPFS...
+✅ Metadata IPFS: ipfs://bafybeid34...
+🧬 Minting on Solana…
+✅ MINTED! Address: 6MFi7Pp...
+📜 Logged → helix_mint_log.json
+✅ All detected scrolls processed.
+        └──
