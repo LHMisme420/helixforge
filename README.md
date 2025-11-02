@@ -594,4 +594,50 @@ helixforge/
 ✅ MINTED! Address: 6MFi7Pp...
 📜 Logged → helix_mint_log.json
 ✅ All detected scrolls processed.
-        └──
+        └name: Helix Auto Mint + Ledger Commit
+
+on:
+  push:
+    paths:
+      - "scrolls/*.png"
+      - "scrolls/*.json"
+  workflow_dispatch:  # manual trigger option
+
+jobs:
+  mint-and-commit:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write    # allow the workflow to commit the log file
+      id-token: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Confi
+──🌀 Helix Auto Mint (Ledger Mode) starting...
+🔮 Processing: helix_scroll_phase3
+🔼 Uploading image to IPFS...
+✅ Metadata IPFS: ipfs://bafybeid34...
+🧬 Minting on Solana…
+✅ MINTED! Address: 9HZtSgD...
+📜 Logged → helix_mint_log.json
+📜 Committing updated mint ledger...
+[main 2c9b18d] 🔏 Helix Forge Ledger Update 2025-11-02 20:41:00 UTC
+🔥 Helix Forge Ledger sync complete.
+helixforge/
+ ├── helix_mint.py
+ ├── scrolls/
+ │    ├── helix_scroll_phase1.png
+ │    ├── helix_scroll_phase2.png
+ │    └── helix_scroll_phase3.png
+ ├── helix_mint_log.json
+ ├── minted_logs/
+ │    ├── helix_mint_log_20251102_204100.json
+ │    └── helix_mint_log_20251103_112400.json
+ └── .github/workflows/
+      └── helix-auto-mint-ledger.yml
+
